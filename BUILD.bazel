@@ -1,0 +1,40 @@
+# Add rules here to build your software
+# See https://docs.bazel.build/versions/master/build-ref.html#BUILD_files
+
+# Allow any ts_library rules in this workspace to reference the config
+# Note: if you move the tsconfig.json file to a subdirectory, you can add an alias() here instead
+#   so that ts_library rules still use it by default.
+#   See https://www.npmjs.com/package/@bazel/typescript#installation
+exports_files(["tsconfig.json"], visibility = ["//:__subpackages__"])
+
+load("@npm_bazel_typescript//:index.bzl", "ts_devserver", "ts_library")
+
+ts_library(
+    name = "src",
+    srcs = [
+        "index.tsx"
+    ],
+    tsconfig = "//:tsconfig.json",
+    deps = [
+	"@npm//@types/react",
+	"@npm//@types/react-dom",
+	"@npm//react",
+	"@npm//react-dom"
+    ]
+)
+
+ts_devserver(
+    name = "devserver",
+    entry_module = "bazel_hooks/index",
+    index_html = ":index.html",
+    port = 9999,
+    serving_path = "/bundle.js",
+    static_files = [
+        ":index.html"
+    ],
+    deps = [
+        ":src",
+	"@npm//react:react__umd",
+	"@npm//react-dom:react-dom__umd"
+    ]
+)
