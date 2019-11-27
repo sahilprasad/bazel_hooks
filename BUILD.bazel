@@ -16,10 +16,10 @@ ts_library(
     ],
     tsconfig = "//:tsconfig.json",
     deps = [
-	"@npm//@types/react",
-	"@npm//@types/react-dom",
-	"@npm//react",
-	"@npm//react-dom"
+        "@npm//@types/react",
+        "@npm//@types/react-dom",
+        "@npm//react",
+        "@npm//react-dom"
     ]
 )
 
@@ -27,6 +27,7 @@ ts_devserver(
     name = "devserver",
     entry_module = "bazel_hooks/index",
     index_html = ":index.html",
+    bootstrap = ["bootstrap.js"],
     port = 9999,
     serving_path = "/bundle.js",
     static_files = [
@@ -34,7 +35,5 @@ ts_devserver(
     ],
     deps = [
         ":src",
-	"@npm//react:react__umd",
-	"@npm//react-dom:react-dom__umd"
     ]
 )
